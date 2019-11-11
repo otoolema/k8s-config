@@ -1,3 +1,4 @@
+---
 apiVersion: v1
 kind: Service
 metadata:
@@ -6,8 +7,8 @@ metadata:
 spec:
   type: LoadBalancer
   ports:
-    - port: 80
-      targetPort: 8080
+  - port: 80
+    targetPort: 8080
   selector:
     app: eks-ws-service
     tier: frontend
@@ -42,17 +43,17 @@ spec:
         tier: frontend
     spec:
       containers:
-        - name: eks-ws-service
-          image: 647475481591.dkr.ecr.eu-central-1.amazonaws.com/eks-example:latest
-          securityContext:
-            privileged: false
-            readOnlyRootFilesystem: true
-            allowPrivilegeEscalation: false
-          ports:
-            - containerPort: 8080
-          env:
-            - name: "SERVER_PORT"
-              value: "8080"
-            - name: "XRAY_DAEMON_ADDR"
-              value: "xray-service.default:2000"
+      - name: eks-ws-service
+        image: 647475481591.dkr.ecr.eu-central-1.amazonaws.com/eks-example:0b853b0e
+        securityContext:
+          privileged: false
+          readOnlyRootFilesystem: true
+          allowPrivilegeEscalation: false
+        ports:
+        - containerPort: 8080
+        env:
+        - name: "SERVER_PORT"
+          value: "8080"
+        - name: "XRAY_DAEMON_ADDR"
+          value: "xray-service.default:2000"
 
