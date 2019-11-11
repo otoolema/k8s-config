@@ -1,29 +1,28 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: eks-ws-service
+  name: eks-example
   namespace: eks-example
+  labels:
+    app: eks-example
+spec:
 spec:
   type: LoadBalancer
   ports:
     - port: 80
       targetPort: 8080
   selector:
-    app: eks-ws-service
+    app: eks-example
     tier: frontend
 ---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: eks-ws-service
+  name: eks-example
   namespace: eks-example
   labels:
     app: eks-example
-  annotations:
-    # Container Image Automated Updates
-    flux.weave.works/automated: "true"
-    # do not apply this manifest on the cluster
-    #flux.weave.works/ignore: "true"
+spec:
 spec:
   replicas: 3
   strategy:
@@ -33,16 +32,16 @@ spec:
       maxSurge: 2
   selector:
     matchLabels:
-      app: eks-ws-service
+      app: eks-example
       tier: frontend
   template:
     metadata:
       labels:
-        app: eks-ws-service
+        app: eks-example
         tier: frontend
     spec:
       containers:
-        - name: eks-ws-service
+        - name: eks-example
           image: 647475481591.dkr.ecr.eu-central-1.amazonaws.com/eks-example:latest
           securityContext:
             privileged: false
